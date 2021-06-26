@@ -2,20 +2,16 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <time.h>
 #include "list.h"
 #include "hashmap.h"
-#include "entregas.h"
 
 
 
 int main (){
 
-    srand(time(NULL));
-    HashMap * direcciones = createMap(100);
-    HashMap * rutasCreadas = createMap(100);
-    List * listaDeNombres = createList();
-    char poscicion[20]; //ASUMO que no tendra tantos digitos ...
+    HashMap * mapaLibrosBiblioteca = createMap(100);
+    HashMap * mapaDeAutores = createMap(100);
+    HashMap * mapaDeDeudores = createMap(100);
 
     int flag = 0;
     int menu = 0;
