@@ -214,3 +214,39 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
     }
     return;
 }
+
+void mapaLibro_Lista (HashMap * map, List * list) {
+
+    //List * auxList = createList();
+    Libro * auxLibro = firstMap(map);
+    
+    while (auxLibro != NULL)
+    {
+        pushFront(list, auxLibro);
+        auxLibro = nextMap(map);
+    }
+
+}
+void ordenarListaAutores (List * listaLibros)
+{
+    
+}
+void librosOrdenados (HashMap * mapaLibrosBiblioteca)
+{
+    Libro * auxLibro = firstMap(mapaLibrosBiblioteca);
+    List * listaLibros = createList();
+
+    mapaLibro_Lista(mapaLibrosBiblioteca, listaLibros);
+
+    int cantidadLibros = get_size(listaLibros);
+    auxLibro = first(listaLibros);
+
+    while (auxLibro != NULL)
+    {
+        printf("Libro: %s - Autor: %s - ISBN: %s \n", auxLibro->nombreDelLibro, auxLibro->nombreDelAutor, auxLibro->ISBN);
+        auxLibro = next(listaLibros);
+    }
+    printf ("Total de libros existentes: %d\n", cantidadLibros);
+    
+    
+}
