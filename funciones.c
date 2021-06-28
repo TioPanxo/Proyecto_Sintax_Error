@@ -102,12 +102,12 @@ void import (int * flag)
 
         linea = fgets(linea, 1024, archivoLibros);
     //Lectura archivo libros
-        while(fgets (linea, 1023, archivoLibros) != NULL){ //Recorrido del archivo para lectura y almacenado
+        /**while(fgets (linea, 1023, archivoLibros) != NULL){ //Recorrido del archivo para lectura y almacenado
             nuevoLibro = (Libro *)malloc(sizeof(Libro));
             nuevoLibro->ISBN = atoi(get_csv_field(linea,0));
             strcpy(nuevoLibro->nombreDelLibro,get_csv_field(linea,1));
          
-
+**/
 
 
 

@@ -4,6 +4,7 @@
 #include <string.h>
 #include "list.h"
 #include "hashmap.h"
+#include "biblioteca.h"
 
 
 
@@ -49,8 +50,8 @@ int main (){
         {   
             //op = -1;
             case 1:
-               //****************************************FUNCION*************************************************
-                flag = 1;
+                import(mapaLibrosBiblioteca, mapaDeDeudores,mapaDeAutores, &flag);
+                //flag = 1;
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");

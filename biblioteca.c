@@ -21,7 +21,8 @@ typedef struct Autor{
 typedef struct Persona{
     char nombreDePersona[50];
     char numeroDeTelefono[10];
-    Libro * libroSolicitado;
+    List * librosSolicitado;     //ES TIPO LIBRO O ES LISTA DE LIBROS
+    //int cantidadLirbosSolicitados?
     char fecha[11];
 }Persona;
 
@@ -67,12 +68,13 @@ const char *get_csv_field (char * tmp, int k) {
     return NULL;
 }
 
-void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap * mapaDeAutores, List * listaDeLibros, int * flag, int * totalLibros)
+void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap * mapaDeAutores, int * flag)
 {
     FILE * archivoLibros;
     FILE * archivoMorosos;
     char nombreArchivoLibros[50];
     char nombreArchivoMorosos[50];
+
     printf(" Que operacion desea realizar:\n");
     printf(" 1. Importar archivo de libros y morosos \n");
     //printf(" 2. Importar archivo de morosos \n");
@@ -105,15 +107,15 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
         }
         //Apertura archivo morosos
         printf(" Ingrese el nombre del archivo de morosos: ");
-        getchar();
+        //getchar();
         gets(nombreArchivoMorosos);    //Lectura del nombre del archivo a importar
         archivoMorosos = fopen(nombreArchivoMorosos,"r");
         if(archivoMorosos == NULL){
-            printf(" El archivo no existe\n");
+            printf(" El archivo '%s' no existe\n", nombreArchivoMorosos);
             return;
         }
-        *flag = 1;
-
+        *flag = 1; 
+        printf ("LLegue aca\n");
         char * linea = (char*)malloc(1024*sizeof(char));
         Libro * nuevoLibro;
         Autor * nuevoAutor;
@@ -121,7 +123,9 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
 
         linea = fgets(linea, 1024, archivoLibros);
     //Lectura archivo libros
+        printf ("primer while \n");
         while(fgets (linea, 1023, archivoLibros) != NULL){ //Recorrido del archivo para lectura y almacenado
+            printf ("Lectura \n");
             nuevoLibro = (Libro *)malloc(sizeof(Libro));
 
             strcpy(nuevoLibro->ISBN,get_csv_field(linea,0));
@@ -134,45 +138,71 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
             strcpy(nuevoLibro->codigoLibro, get_csv_field(linea,3));
             nuevoLibro->disponibilidad = atoi(get_csv_field(linea,4));
             insertMap(mapaLibrosBiblioteca, strdup(auxNombreLibro),nuevoLibro);   //Almacenado en HashMap de Libros
-            *totalLibros+=1;
+            //*totalLibros+=1;
             Libro * auxiliar = searchMap(mapaLibrosBiblioteca, nuevoLibro->nombreDelAutor);
             //MAPA AUTORES
             if (auxiliar != NULL) { //Caso en que se encuentra un libro con el mismo nombre de autor
-                pushFront(nuevoAutor->listaDeLibros, auxiliar); //No se si esta bien, pero al ya existir el nombre en el struct solo se llena la lista¿?
+                pushBack(nuevoAutor->listaDeLibros, auxiliar); //No se si esta bien, pero al ya existir el nombre en el struct solo se llena la lista¿?
             } else {    //En caso de que no exista, se "inciaria" la lista
                 nuevoAutor = (Autor *) malloc (sizeof(Autor));
                 strcpy(nuevoAutor->nombreDelAutor,nuevoLibro->nombreDelAutor);
-                pushFront(nuevoAutor->listaDeLibros, auxiliar);
+                nuevoAutor->listaDeLibros = createList();
+                pushBack(nuevoAutor->listaDeLibros, auxiliar);
                 insertMap(mapaDeAutores,strdup(auxNombreAutor), nuevoAutor);    //AL NO EXISTIR SE AGREGA AL MAPA d autores
             }
 
-        }   
-        //LECTURA ARCHIVO PRESTAMOS
+        }
+        printf ("Archivo %s leido correctamente", nombreArchivoLibros);   
 
+
+        /**printf(" Ingrese el nombre del archivo de morosos: ");
+        //getchar();
+        gets(nombreArchivoMorosos);    //Lectura del nombre del archivo a importar
+        archivoMorosos = fopen(nombreArchivoMorosos,"r");
+        if(archivoMorosos == NULL){
+            printf(" El archivo '%s' no existe\n", nombreArchivoMorosos);
+            return;
+        }
+        *flag = 1;**/
+
+
+        //LECTURA ARCHIVO PRESTAMOS
+        linea = fgets(linea, 1024, archivoMorosos);
         while(fgets (linea, 1023, archivoMorosos) != NULL){
 
             nuevaPersona = (Persona *)malloc(sizeof(Persona));
+            Libro * auxLibroPrestado = (Libro *)malloc(sizeof(Libro));
 
             strcpy(nuevaPersona->nombreDePersona,get_csv_field(linea,0));
-
             char auxNombrePersona[50];
             strcpy(auxNombrePersona,get_csv_field(linea,0));
-
             strcpy(nuevaPersona->numeroDeTelefono,get_csv_field(linea,1));
-
             char nombreLibroSolicitado[50];
             strcpy(nombreLibroSolicitado, get_csv_field(linea,2));
             //pushFront(listaDeLibrosSolicitados, )
             strcpy(nuevaPersona->fecha, get_csv_field(linea,3));
 
+            auxLibroPrestado = searchMap(mapaLibrosBiblioteca, strdup(nombreLibroSolicitado));
+
             Persona * auxPersona = searchMap(mapaDeDeudores, nuevaPersona->nombreDePersona);
-            if (auxPersona != NULL) { //Caso en que se encuentra un libro con el mismo nombre de autor
-                pushFront(nuevaPersona->libroSolicitado, auxPersona); //No se si esta bien, pero al ya existir el nombre en el struct solo se llena la lista¿?
+            
+            if (auxPersona != NULL) { //Caso en que se encuentra persona con deuda
+                pushFront(nuevaPersona->librosSolicitado, auxLibroPrestado); 
+                // FALTA CONTADOR DE MAXIMO 3 LIBROS, AGREGAR A STRUCT
             } else {    //En caso de que no exista, se "inciaria" la lista
                 nuevaPersona = (Persona *) malloc (sizeof(Persona));
-                strcpy(nuevaPersona->nombreDePersona,nuevoLibro->nombreDelAutor);
-                pushFront(nuevaPersona->libroSolicitado, auxPersona);   //no entiendo la implementacion de esto
-                insertMap(mapaDeDeudores, strdup(auxNombrePersona), nuevaPersona);    //AL NO EXISTIR SE AGREGA AL MAPA d autores
+                strcpy(nuevaPersona->nombreDePersona,auxNombrePersona);
+                nuevaPersona->librosSolicitado = createList();
+                //CONTADOR MAXIMO 3 LIBROS
+                pushFront(nuevaPersona->librosSolicitado, auxLibroPrestado);   //no entiendo la implementacion de esto
+                insertMap(mapaDeDeudores, strdup(auxNombrePersona), nuevaPersona);    //AL NO EXISTIR SE AGREGA AL MAPA d deudores
             }
         }
+        printf ("Archivo %s leido correctamente", nombreArchivoMorosos);
+    }
+
+    if (op == 2 ) {
+        printf ("BLABLA");
+    }
+    return;
 }
