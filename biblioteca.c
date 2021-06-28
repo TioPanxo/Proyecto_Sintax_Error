@@ -6,10 +6,10 @@
 #include "hashmap.h"
 
 typedef struct Libro{
-    char nombreDelLibro[50];
+    char nombreDelLibro[120];
     char nombreDelAutor[50];
     char ISBN[20];
-    char codigoLibro[10];
+    char codigoLibro[20];
     int disponibilidad;
 }Libro;
 
@@ -124,7 +124,7 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
         linea = fgets(linea, 1024, archivoLibros);
     //Lectura archivo libros
         printf ("primer while \n");
-        while(fgets (linea, 1023, archivoLibros) != NULL){ //Recorrido del archivo para lectura y almacenado
+        while(fgets (linea, 1024, archivoLibros) != NULL){ //Recorrido del archivo para lectura y almacenado
             printf ("Lectura \n");
             nuevoLibro = (Libro *)malloc(sizeof(Libro));
 
@@ -140,6 +140,9 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
             insertMap(mapaLibrosBiblioteca, strdup(auxNombreLibro),nuevoLibro);   //Almacenado en HashMap de Libros
             //*totalLibros+=1;
             Libro * auxiliar = searchMap(mapaLibrosBiblioteca, nuevoLibro->nombreDelAutor);
+
+            //printf ("isbn: %s - libro: %s - autor: %s - ubi: %s - dispo: %d\n", nuevoLibro->ISBN,nuevoLibro->nombreDelLibro, nuevoLibro->nombreDelAutor, nuevoLibro->codigoLibro, nuevoLibro->disponibilidad);
+            
             //MAPA AUTORES
             if (auxiliar != NULL) { //Caso en que se encuentra un libro con el mismo nombre de autor
                 pushBack(nuevoAutor->listaDeLibros, auxiliar); //No se si esta bien, pero al ya existir el nombre en el struct solo se llena la lista¿?
@@ -152,19 +155,21 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
             }
 
         }
-        printf ("Archivo %s leido correctamente", nombreArchivoLibros);   
+        printf ("Archivo %s leido correctamente\n", nombreArchivoLibros);   
 
-
-        /**printf(" Ingrese el nombre del archivo de morosos: ");
-        //getchar();
-        gets(nombreArchivoMorosos);    //Lectura del nombre del archivo a importar
-        archivoMorosos = fopen(nombreArchivoMorosos,"r");
-        if(archivoMorosos == NULL){
-            printf(" El archivo '%s' no existe\n", nombreArchivoMorosos);
-            return;
+        
+        /**    * IMPRESION MAPA LIBROS *
+         
+        Libro * auxiliarPrint = firstMap(mapaLibrosBiblioteca);
+        int cont = 0;
+        while (auxiliarPrint != NULL){
+            
+            printf ("autor: %s - libro: %s - ubi: %s -  disponibilidad: %d - ISBN: %s \n",auxiliarPrint->nombreDelAutor, auxiliarPrint->nombreDelLibro,auxiliarPrint->codigoLibro, auxiliarPrint->disponibilidad, auxiliarPrint->ISBN);
+            cont++;
+            auxiliarPrint = nextMap(mapaLibrosBiblioteca);
         }
-        *flag = 1;**/
-
+        printf ("CONTADOR = %d\n", cont);
+        **/ 
 
         //LECTURA ARCHIVO PRESTAMOS
         linea = fgets(linea, 1024, archivoMorosos);
@@ -186,6 +191,8 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
 
             Persona * auxPersona = searchMap(mapaDeDeudores, nuevaPersona->nombreDePersona);
             
+            printf ("persona : %s - tel: %s - libro: %s\n", nuevaPersona->nombreDePersona, nuevaPersona->numeroDeTelefono, nombreLibroSolicitado);
+
             if (auxPersona != NULL) { //Caso en que se encuentra persona con deuda
                 pushFront(nuevaPersona->librosSolicitado, auxLibroPrestado); 
                 // FALTA CONTADOR DE MAXIMO 3 LIBROS, AGREGAR A STRUCT
@@ -198,7 +205,8 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
                 insertMap(mapaDeDeudores, strdup(auxNombrePersona), nuevaPersona);    //AL NO EXISTIR SE AGREGA AL MAPA d deudores
             }
         }
-        printf ("Archivo %s leido correctamente", nombreArchivoMorosos);
+        printf ("Archivo %s leido correctamente\n", nombreArchivoMorosos);
+
     }
 
     if (op == 2 ) {
