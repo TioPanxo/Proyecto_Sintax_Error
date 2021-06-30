@@ -1,8 +1,7 @@
 # BibliApp - Proyecto Sintax_Error
 
-Foobar is a Python library for dealing with word pluralization.
 
-## Installation
+## Instalcion
 
 Descargar los archivos, ingresar a la carpeta mediante la consola de Windos o Visual Studio Code, y compilar el programa. Debe tener un compilador de C, en nuestro caso, mingw y la extension de Microsoft para C en Visual Studio Code.
 
