@@ -115,7 +115,7 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
             return;
         }
         *flag = 1; 
-        printf ("LLegue aca\n");
+        //printf ("LLegue aca\n");
         char * linea = (char*)malloc(1024*sizeof(char));
         Libro * nuevoLibro;
         Autor * nuevoAutor;
@@ -125,7 +125,6 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
     //Lectura archivo libros
         printf ("primer while \n");
         while(fgets (linea, 1024, archivoLibros) != NULL){ //Recorrido del archivo para lectura y almacenado
-            printf ("Lectura \n");
             nuevoLibro = (Libro *)malloc(sizeof(Libro));
 
             strcpy(nuevoLibro->ISBN,get_csv_field(linea,0));
@@ -150,7 +149,7 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
                 nuevoAutor = (Autor *) malloc (sizeof(Autor));
                 strcpy(nuevoAutor->nombreDelAutor,nuevoLibro->nombreDelAutor);
                 nuevoAutor->listaDeLibros = createList();
-                pushBack(nuevoAutor->listaDeLibros, auxiliar);
+                pushFront(nuevoAutor->listaDeLibros, auxiliar);
                 insertMap(mapaDeAutores,strdup(auxNombreAutor), nuevoAutor);    //AL NO EXISTIR SE AGREGA AL MAPA d autores
             }
 
@@ -170,7 +169,7 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
         }
         printf ("CONTADOR = %d\n", cont);
         **/ 
-
+       
         //LECTURA ARCHIVO PRESTAMOS
         linea = fgets(linea, 1024, archivoMorosos);
         while(fgets (linea, 1023, archivoMorosos) != NULL){
@@ -190,8 +189,6 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
             auxLibroPrestado = searchMap(mapaLibrosBiblioteca, strdup(nombreLibroSolicitado));
 
             Persona * auxPersona = searchMap(mapaDeDeudores, nuevaPersona->nombreDePersona);
-            
-            printf ("persona : %s - tel: %s - libro: %s\n", nuevaPersona->nombreDePersona, nuevaPersona->numeroDeTelefono, nombreLibroSolicitado);
 
             if (auxPersona != NULL) { //Caso en que se encuentra persona con deuda
                 pushFront(nuevaPersona->librosSolicitado, auxLibroPrestado); 
@@ -206,6 +203,23 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
             }
         }
         printf ("Archivo %s leido correctamente\n", nombreArchivoMorosos);
+        /** IMPRIMIR MAPA DEUDORES Y LISTA DE LIBROS DE SE DEBEN **
+        Persona * auxPersona = (Persona *) malloc (sizeof(Persona));
+        auxPersona = firstMap(mapaDeDeudores);
+        while (auxPersona != NULL)
+        {
+            Libro * auxLibro = (Libro *)malloc(sizeof(Libro));
+            auxLibro = first(auxPersona->librosSolicitado);
+            printf("Deudor: %s - Libro(s) solicitado(s): %s",auxPersona->nombreDePersona,auxLibro);
+            while (auxLibro != NULL) {
+                auxLibro = next(auxPersona->librosSolicitado);
+                if (auxLibro == NULL) break;
+                printf ("- %s ", auxLibro);
+            }
+            auxPersona = nextMap(mapaDeDeudores);
+            printf ("\n");
+        }
+        **/
 
     }
 
