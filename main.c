@@ -73,7 +73,7 @@ int main (){
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                librosOrdenados (mapaLibrosBiblioteca);
+                librosOrdenados(mapaLibrosBiblioteca);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -95,7 +95,7 @@ int main (){
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //****************************************FUNCION*************************************************
+                mostrarTodosLosLibrosAutor(mapaDeAutores);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -116,7 +116,7 @@ int main (){
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //****************************************FUNCION*************************************************
+                mostrarUnLibro(mapaLibrosBiblioteca);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");

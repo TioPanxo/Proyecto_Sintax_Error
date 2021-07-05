@@ -153,3 +153,7 @@ void * nextMap(HashMap * map) {
     
     return NULL;
 }
+
+long getSizeMap(HashMap * map){
+    return map->size;
+}
