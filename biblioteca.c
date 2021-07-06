@@ -425,3 +425,67 @@ void devolverLibro(HashMap * mapaLibrosBiblioteca,HashMap * mapaDeAutores,HashMa
     popCurrent(listaDePersona);
     printf(" El libro %s se ha devuelto con exito\n",auxLibro->nombreDelLibro);
 }
+
+//void mostrarMorosos ()
+
+void cerrarPrograma (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores,int * flag)
+
+{
+    FILE * archivoLibros;
+    FILE * archivoMorosos;
+
+    if (*flag == 0) {
+        printf ("Recuerde importar archivos antes de exportarlos");
+        return;
+    }
+    //Actualizacion csv
+    archivoLibros = fopen("librosBiblioteca.csv","r+"); //Es mejor borrar todo y agregar o que se sobreescriba y usar fseek
+    archivoMorosos = fopen("deudores.csv", "r+");
+
+    fseek(archivoLibros,-1,SEEK_SET);
+    fseek(archivoMorosos,-1,SEEK_SET);
+
+    Libro * nuevoLibro;
+    Persona * nuevaPersona;
+
+
+    nuevoLibro = (Libro *)malloc(sizeof(Libro));
+    nuevoLibro = firstMap(mapaLibrosBiblioteca);
+
+    archivoLibros = fopen("librosBiblioteca.csv","r+"); //Es mejor borrar todo y agregar o que se sobreescriba y usar fseek
+    archivoMorosos = fopen("deudores.csv", "r+");
+
+    fseek(archivoLibros,-1,SEEK_SET);
+    fseek(archivoMorosos,-1,SEEK_SET);
+
+    fprintf (archivoLibros,"ISBN,Titulo,Autor,Ubicacion,Disponibilidad\n");
+
+    while (nuevoLibro != NULL) {    //Recorrido de libros para escribir en csv
+        fprintf(archivoLibros, "%s,", nuevoLibro->ISBN);
+        fprintf(archivoLibros, "%s,", nuevoLibro->nombreDelLibro);
+        fprintf(archivoLibros, "%s,", nuevoLibro->nombreDelAutor);
+        fprintf(archivoLibros, "%s,", nuevoLibro->codigoLibro);
+        fprintf(archivoLibros, "%d\n", nuevoLibro->disponibilidad);
+        printf ("Libro almacenado: %s \n", nuevoLibro->nombreDelLibro);
+        nuevoLibro = nextMap(mapaLibrosBiblioteca);
+    }
+
+    printf ("Libros exportados correctamente a librosBiblioteca.csv");
+    fclose(archivoLibros);
+
+    nuevaPersona = (Persona *)malloc(sizeof(Persona));
+    nuevaPersona = firstMap(mapaDeDeudores);
+    fprintf (archivoMorosos, "Nombre de persona,Numero telefonico,Nombre del libro,Fecha de prestamo\n");
+    while (nuevaPersona != NULL)
+    {
+        fprintf (archivoMorosos, "%s,", nuevaPersona->nombreDePersona);
+        fprintf (archivoMorosos, "%s,", nuevaPersona->numeroDeTelefono);
+        fprintf (archivoMorosos, "%s,", nuevaPersona->libroSolicitado);
+        fprintf (archivoMorosos, "%s\n", nuevaPersona->fecha);
+        printf ("Moroso almacenado: %s \n", nuevaPersona->nombreDePersona);
+        nuevaPersona = nextMap(mapaDeDeudores);
+    }
+    
+    printf ("Morosos exportados correctamente a deudores.csv");
+    fclose(archivoMorosos);
+}

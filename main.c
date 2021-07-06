@@ -41,7 +41,7 @@ int main (){
             while(getchar()!='\n'); //limpiar buffer del teclado en caso de que el usuario ingrese una 
             //opcion no valida
             scanf (" %d", &menu);
-            if(menu == 0 ) exit(0);
+            //if(menu == 0 ) exit(0);
         }
         printf("===============================================================\n");
         fflush(stdin);
@@ -51,7 +51,7 @@ int main (){
             //op = -1;
             case 1:
                 import(mapaLibrosBiblioteca, mapaDeDeudores,mapaDeAutores, &flag);
-                //flag = 1;
+                flag = 1;
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -63,7 +63,7 @@ int main (){
                     while(getchar()!='\n');
                     scanf ("%d", &op);
                 }
-                if (op == 0) return 0;
+                //if (op == 0) return 0;
                 if (op == 1) break;
                 break;
 
@@ -85,7 +85,7 @@ int main (){
                     while(getchar()!='\n');
                     scanf ("%d", &op);
                 }
-                if (op == 0) return 0;
+                //if (op == 0) return 0;
                 if (op == 1) break;
                 break;
 
@@ -107,7 +107,7 @@ int main (){
                     while(getchar()!='\n');
                     scanf ("%d", &op);
                 }
-                if (op == 0) return 0;
+                //if (op == 0) return 0;
                 if (op == 1) break;
                 break;
 
@@ -128,7 +128,7 @@ int main (){
                     while(getchar()!='\n');
                     scanf ("%d", &op);
                 }
-                if (op == 0) return 0;
+                //if (op == 0) return 0;
                 if (op == 1) break;
                  break;
 
@@ -149,7 +149,7 @@ int main (){
                     while(getchar()!='\n');
                     scanf ("%d", &op);
                 }
-                if (op == 0) return 0;
+                //if (op == 0) return 0;
                 if (op == 1) break;
                 break;
 
@@ -170,7 +170,7 @@ int main (){
                     while(getchar()!='\n');
                     scanf ("%d", &op);
                 }
-                if (op == 0) return 0;
+                //if (op == 0) return 0;
                 if (op == 1) break;
                 break;
 
@@ -191,14 +191,19 @@ int main (){
                     while(getchar()!='\n');
                     scanf ("%d", &op);
                 }
-                if (op == 0) return 0;
+                //if (op == 0) return 0;
                 if (op == 1) break;
                 break;
 
             
             case 0: 
-                exit(0);
-                break;
+                printf ("Indique la opcion: 0. Salir y guardar datos en los archivos - 1. Salir sin guardar ");
+                scanf ("%d", &op);
+                if (op == 0) {
+                    cerrarPrograma(mapaLibrosBiblioteca, mapaDeDeudores, &flag);
+                    exit(0);
+                }
+                if (op == 1) exit (0);
         }
     }
 
