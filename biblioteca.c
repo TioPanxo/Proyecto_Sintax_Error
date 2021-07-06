@@ -162,6 +162,7 @@ void import (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, HashMap *
             pushBack(listaDePersona,nuevaPersona);
             insertMap(mapaDeDeudores, strdup(nuevaPersona->nombreDePersona),listaDePersona);    //AL NO EXISTIR SE AGREGA AL MAPA d deudores
         }
+        printf("%s\n",nuevaPersona->nombreDePersona);
     }
     printf ("Archivo Deudores.csv leido correctamente\n");
     fclose(archivoMorosos);
@@ -426,11 +427,48 @@ void devolverLibro(HashMap * mapaLibrosBiblioteca,HashMap * mapaDeAutores,HashMa
     printf(" El libro %s se ha devuelto con exito\n",auxLibro->nombreDelLibro);
 }
 
-//void mostrarMorosos ()
+void mostrarMorosos(HashMap * mapaDeDeudores){
+    printf(" MOSTRANDO UNA LISTA DE LAS PERSONAS QUE DEBEN LIBROS\n");
 
-void cerrarPrograma (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores,int * flag)
+    //Tiempo actual en tipo time_t
+    time_t ahora,horaAux;
+    time(&ahora);
 
-{
+    struct tm fechaAux;
+    struct tm * fechaActualAux;
+
+    fechaActualAux = localtime(&ahora);
+    int contador = 0;
+
+    List * listaDePersona = firstMap(mapaDeDeudores);
+    while(listaDePersona != NULL){
+        Persona * personaAux = first(listaDePersona);
+        while(personaAux != NULL){
+            fechaAux.tm_year = fechaActualAux->tm_year;
+            fechaAux.tm_mon = atoi(get_csv_field(personaAux->fecha,1));
+            fechaAux.tm_mon -= 1;
+            fechaAux.tm_mday = atoi(get_csv_field(personaAux->fecha,0));
+            fechaAux.tm_hour = 0;
+            fechaAux.tm_min = 0;
+            fechaAux.tm_sec = 1;
+            fechaAux.tm_isdst = -1;
+
+            horaAux = mktime(&fechaAux);
+
+            double diferenciaTiempo = difftime(ahora,horaAux);
+            if((diferenciaTiempo / (60*60*24)) >= 8.0){
+                printf("===============================================================\n");
+                printf(" La persona de nombre: %s - Numero Telefonico: %s\n",personaAux->nombreDePersona,personaAux->numeroDeTelefono);
+                printf(" Debe el libro: %s - Desde hace %.0lf Dias\n",personaAux->libroSolicitado,(diferenciaTiempo / (60*60*24)) - 8);
+                contador++;
+            }
+            personaAux = next(listaDePersona);
+        }
+        listaDePersona = nextMap(mapaDeDeudores);
+    }
+}
+
+/*void cerrarPrograma (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores){
     FILE * archivoLibros;
     FILE * archivoMorosos;
 
@@ -488,4 +526,4 @@ void cerrarPrograma (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores,in
     
     printf ("Morosos exportados correctamente a deudores.csv");
     fclose(archivoMorosos);
-}
+}*/

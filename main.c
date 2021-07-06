@@ -179,7 +179,7 @@ int main (){
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //****************************************FUNCION*************************************************
+                mostrarMorosos(mapaDeDeudores);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -200,7 +200,7 @@ int main (){
                 printf ("Indique la opcion: 0. Salir y guardar datos en los archivos - 1. Salir sin guardar ");
                 scanf ("%d", &op);
                 if (op == 0) {
-                    cerrarPrograma(mapaLibrosBiblioteca, mapaDeDeudores, &flag);
+                    //cerrarPrograma(mapaLibrosBiblioteca, mapaDeDeudores, &flag);
                     exit(0);
                 }
                 if (op == 1) exit (0);
