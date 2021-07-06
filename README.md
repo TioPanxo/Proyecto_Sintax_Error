@@ -45,6 +45,7 @@ Como grupo decidimos no darnos puntos, pero si evaluar aspectos positivos o nega
     
 
 *Nicolas Oñate:*
+
     Positivos:
        
 

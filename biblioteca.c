@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 #include "list.h"
 #include "hashmap.h"
 
@@ -284,4 +285,143 @@ void mostrarUnLibro(HashMap * mapaLibrosBiblioteca){
         printf(" Nombre(s) Autor(es): %s\n Nombre Libro: %s - ISBN: %s\n",libroAux->nombreDelAutor,libroAux->nombreDelLibro,libroAux->ISBN);
         printf(" Codigo Biblioteca: %s - Disponibilidad: %d\n",libroAux->codigoLibro,libroAux->disponibilidad);
     }
+}
+
+Libro * buscarLibroLista(Autor * autorAux,char * nombreLibro){
+    Libro * libroAux = first(autorAux->listaDeLibros);
+    while(libroAux != NULL){
+        if(strcmp(libroAux->nombreDelLibro,nombreLibro) == 0){
+            return libroAux;
+        }
+        libroAux = next(autorAux->listaDeLibros);
+    }
+    return(NULL);
+}
+
+char * obtenerFechaActual(){
+    time_t ahora;
+    struct tm * fecha;
+    time(&ahora);
+    fecha = localtime(&ahora);
+
+    char * fechaAux  = (char * )malloc(sizeof(char) * 11);
+    char diaAux[3];
+    char mesAux[3];
+    char anioAux[5];
+
+    sprintf(diaAux,"%d",fecha->tm_mday);
+    sprintf(mesAux,"%d",fecha->tm_mon+1);
+    sprintf(anioAux,"%d",fecha->tm_year+1900);
+
+    if(fecha->tm_mday < 10){
+        strcpy(fechaAux,"0");
+    }
+    strcat(fechaAux,diaAux);
+    strcat(fechaAux,",");
+
+    if(fecha->tm_mon + 1 <10){
+        strcat(fechaAux,"0");
+    }
+    strcat(fechaAux,mesAux);
+    strcat(fechaAux,",");
+
+    strcat(fechaAux,anioAux);
+
+    return fechaAux;
+}
+
+void solicitarLibro(HashMap * mapaLibrosBiblioteca,HashMap * mapaDeAutores,HashMap * mapaDeDeudores){
+    char fechaPrestamo[11];
+    strcpy(fechaPrestamo,obtenerFechaActual());
+    char nombreAux[120];
+    printf(" Ingrese el nombre del Libro que desea Solicitar\n ");
+    gets(nombreAux);
+    Libro * libroAux = searchMap(mapaLibrosBiblioteca,nombreAux);
+    if(libroAux == NULL){
+        printf(" NO SE ENCUENTRA EL LIBRO DE NOMBRE %s\n",nombreAux);
+        return;
+    }
+    if(libroAux->disponibilidad == 0){
+        printf(" NO HAY DISPONIBILIDAD PARA ESTE LIBRO\n");
+        return;
+    }
+    libroAux->disponibilidad -= 1;
+    Autor * autorAux = searchMap(mapaDeAutores,libroAux->nombreDelAutor);
+    libroAux = buscarLibroLista(autorAux,libroAux->nombreDelLibro);
+    Persona * nuevaPersona = (Persona * )malloc(sizeof(Persona));
+    printf(" Ingrese su Nombre\n ");
+    gets(nuevaPersona->nombreDePersona);
+    List * listaDePersona = searchMap(mapaDeDeudores,nuevaPersona->nombreDePersona);
+    if(listaDePersona == NULL){
+        listaDePersona = createList();
+        printf(" Ingrese su numero telefonico (ej: 912345678)\n ");
+        gets(nuevaPersona->numeroDeTelefono);
+        strcpy(nuevaPersona->libroSolicitado,libroAux->nombreDelLibro);
+        strcpy(nuevaPersona->fecha,fechaPrestamo);
+        pushBack(listaDePersona,nuevaPersona);
+        insertMap(mapaDeDeudores,strdup(nuevaPersona->nombreDePersona),listaDePersona);
+    }
+    else{
+        if(get_size(listaDePersona) == 3){
+            printf(" NO PUEDES SOLICITAR MAS LIBROS\n");
+            return;
+        }
+        else{
+            printf(" Ingrese su numero telefonico (ej: 912345678)\n ");
+            gets(nuevaPersona->numeroDeTelefono);
+            strcpy(nuevaPersona->libroSolicitado,libroAux->nombreDelLibro);
+            strcpy(nuevaPersona->fecha,fechaPrestamo);
+            pushBack(listaDePersona,nuevaPersona);
+        }
+    }
+
+    printf(" LIBRO SOLICITADO CON EXITO\n");
+    printf("===============================================================\n");
+    printf(" Nombre del solicitante: %s - Numero de telefono: %s\n",nuevaPersona->nombreDePersona,nuevaPersona->numeroDeTelefono);
+    printf(" Nombre del libro: %s - Fecha de prestamo: %s\n",nuevaPersona->libroSolicitado,nuevaPersona->fecha);
+    printf(" Recuerda que tienes 7 dias para devolver el libro\n");
+}
+
+Persona * buscarPersonaLista(List * listaDePersona,char * nombreLibroAux){
+    Persona * auxPersona = first(listaDePersona);
+    while(auxPersona != NULL){
+        if(strcmp(auxPersona->libroSolicitado,nombreLibroAux) == 0){
+            return auxPersona;
+        }
+    }
+    return NULL;
+}
+
+void devolverLibro(HashMap * mapaLibrosBiblioteca,HashMap * mapaDeAutores,HashMap * mapaDeDeudores){
+    char nombreAux[50];
+    printf(" Ingrese su Nombre\n ");
+    gets(nombreAux);
+    List * listaDePersona = searchMap(mapaDeDeudores,nombreAux); 
+    if(listaDePersona == NULL){
+        printf(" NO SE ENCUENTRA A LA PERSONA DE NOMBRE %s\n",nombreAux);
+        return;
+    }
+    printf(" La persona de nombre %s debe el o los siguientes libros\n",nombreAux);
+    Persona * auxPersona = first(listaDePersona);
+    while(auxPersona != NULL){
+        printf("===============================================================\n");
+        printf(" Nombre del solicitante: %s - Numero de telefono: %s\n",auxPersona->nombreDePersona,auxPersona->numeroDeTelefono);
+        printf(" Nombre del libro: %s - Fecha de prestamo: %s\n",auxPersona->libroSolicitado,auxPersona->fecha);
+        auxPersona = next(listaDePersona);
+    }
+    char nombreLibroAux[120];
+    printf("===============================================================\n");
+    printf(" Ingrese el nombre del libro que desea devolver\n ");
+    gets(nombreLibroAux);
+    Persona * personaAux = buscarPersonaLista(listaDePersona,nombreLibroAux);
+    while(personaAux == NULL){
+        printf(" No se encuentra el libro de nombre %s\n",nombreLibroAux);
+        printf(" Ingrese el nombre del libro que desea devolver\n ");
+        gets(nombreLibroAux);
+        Persona * personaAux = buscarPersonaLista(listaDePersona,nombreLibroAux);
+    }
+    Libro * auxLibro = searchMap(mapaLibrosBiblioteca,personaAux->libroSolicitado);
+    auxLibro->disponibilidad += 1;
+    popCurrent(listaDePersona);
+    printf(" El libro %s se ha devuelto con exito\n",auxLibro->nombreDelLibro);
 }

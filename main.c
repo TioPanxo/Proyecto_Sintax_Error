@@ -21,7 +21,7 @@ int main (){
     while (menu >= 0 && menu <= 8) {
         menu = -1;
         printf("===============================================================\n");
-        printf("                             RUTAS                             \n");
+        printf("                          BiblioApp                            \n");
         printf("===============================================================\n");
         printf("|   1.- Importar Libros                                       |\n");
         printf("|   2.- Mostrar libros ordenados                              |\n");
@@ -137,7 +137,7 @@ int main (){
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-                //****************************************FUNCION*************************************************
+                solicitarLibro(mapaLibrosBiblioteca,mapaDeAutores,mapaDeDeudores);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
@@ -158,7 +158,7 @@ int main (){
                     printf(" Archivo no iniciado, recuerde importar Direcciones\n");
                     break;
                 } 
-               //****************************************FUNCION*************************************************
+                devolverLibro(mapaLibrosBiblioteca,mapaDeAutores,mapaDeDeudores);
                 printf ("===============================================================\n");
                 printf ("          Volver al menu: 1 - Salir del programa: 0\n");
                 printf ("===============================================================\n");
