@@ -511,11 +511,13 @@ void cerrarPrograma (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores){
         while (nuevaPersona != NULL) {
 
 
-            printf ("Dato: %s - %s - %s - %s \n", nuevaPersona->nombreDePersona, nuevaPersona->numeroDeTelefono, nuevaPersona->libroSolicitado, nuevaPersona->fecha);
+            //printf ("Dato: %s - %s - %s - %s \n", nuevaPersona->nombreDePersona, nuevaPersona->numeroDeTelefono, nuevaPersona->libroSolicitado, nuevaPersona->fecha);
             fprintf (archivoMorosos,"%s,", nuevaPersona->nombreDePersona);
             fprintf (archivoMorosos,"%s,", nuevaPersona->numeroDeTelefono);
             fprintf (archivoMorosos,"%s,", nuevaPersona->libroSolicitado);
-            fprintf (archivoMorosos,"'%s'\n", nuevaPersona->fecha);
+            fprintf(archivoMorosos, "%c", 34);
+            fprintf (archivoMorosos,"%s", nuevaPersona->fecha);
+            fprintf(archivoMorosos, "%c\n", 34);
 
             nuevaPersona = next(listaDePersona);
         }
