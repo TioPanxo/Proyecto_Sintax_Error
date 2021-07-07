@@ -23,6 +23,6 @@ void devolverLibro(HashMap * mapaLibrosBiblioteca,HashMap * mapaDeAutores,HashMa
 
 void mostrarMorosos(HashMap * mapaDeDeudores);
 
-void cerrarPrograma (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores, int * flag);
+void cerrarPrograma (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores);
 
 #endif /* biblioteca_h */

@@ -197,10 +197,13 @@ int main (){
 
             
             case 0: 
-                printf ("Indique la opcion: 0. Salir y guardar datos en los archivos - 1. Salir sin guardar ");
+                printf ("===============================================================\n");
+                printf ("Guardar y salir: 0. Salir - Salir sin guardar: 1\n");
+                printf ("===============================================================\n");
+                printf(" Ingrese un numero: ");
                 scanf ("%d", &op);
                 if (op == 0) {
-                    //cerrarPrograma(mapaLibrosBiblioteca, mapaDeDeudores, &flag);
+                    cerrarPrograma(mapaLibrosBiblioteca, mapaDeDeudores);
                     exit(0);
                 }
                 if (op == 1) exit (0);
