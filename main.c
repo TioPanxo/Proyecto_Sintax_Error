@@ -53,18 +53,8 @@ int main (){
                 import(mapaLibrosBiblioteca, mapaDeDeudores,mapaDeAutores, &flag);
                 flag = 1;
                 printf ("===============================================================\n");
-                printf ("          Volver al menu: 1 - Salir del programa: 0\n");
+                printf ("          Operacion finalizada. Volviendo al menu\n");
                 printf ("===============================================================\n");
-                printf(" Ingrese un numero: ");
-                scanf ("%d", &op);
-                while(op < 0 || op > 1){
-                    printf ("===============================================================\n");
-                    printf (" Por favor ingrese uno de los numeros anteriores: ");
-                    while(getchar()!='\n');
-                    scanf ("%d", &op);
-                }
-                //if (op == 0) return 0;
-                if (op == 1) break;
                 break;
 
 
@@ -74,19 +64,9 @@ int main (){
                     break;
                 } 
                 librosOrdenados(mapaLibrosBiblioteca);
+               printf ("===============================================================\n");
+                printf ("          Operacion finalizada. Volviendo al menu\n");
                 printf ("===============================================================\n");
-                printf ("          Volver al menu: 1 - Salir del programa: 0\n");
-                printf ("===============================================================\n");
-                printf(" Ingrese un numero: ");
-                scanf ("%d", &op);
-                while(op < 0 || op > 1){
-                    printf ("===============================================================\n");
-                    printf (" Por favor ingrese uno de los numeros anteriores: ");
-                    while(getchar()!='\n');
-                    scanf ("%d", &op);
-                }
-                //if (op == 0) return 0;
-                if (op == 1) break;
                 break;
 
 
@@ -97,18 +77,8 @@ int main (){
                 } 
                 mostrarTodosLosLibrosAutor(mapaDeAutores);
                 printf ("===============================================================\n");
-                printf ("          Volver al menu: 1 - Salir del programa: 0\n");
+                printf ("          Operacion finalizada. Volviendo al menu\n");
                 printf ("===============================================================\n");
-                printf(" Ingrese un numero: ");
-                scanf ("%d", &op);
-                while(op < 0 || op > 1){
-                    printf ("===============================================================\n");
-                    printf (" Por favor ingrese uno de los numeros anteriores: ");
-                    while(getchar()!='\n');
-                    scanf ("%d", &op);
-                }
-                //if (op == 0) return 0;
-                if (op == 1) break;
                 break;
 
             case 4:
@@ -117,20 +87,10 @@ int main (){
                     break;
                 } 
                 mostrarUnLibro(mapaLibrosBiblioteca);
+               printf ("===============================================================\n");
+                printf ("          Operacion finalizada. Volviendo al menu\n");
                 printf ("===============================================================\n");
-                printf ("          Volver al menu: 1 - Salir del programa: 0\n");
-                printf ("===============================================================\n");
-                printf(" Ingrese un numero: ");
-                scanf ("%d", &op);
-                while(op < 0 || op > 1){
-                    printf ("===============================================================\n");
-                    printf (" Por favor ingrese uno de los numeros anteriores: ");
-                    while(getchar()!='\n');
-                    scanf ("%d", &op);
-                }
-                //if (op == 0) return 0;
-                if (op == 1) break;
-                 break;
+                break;
 
             case 5:
                 if (flag == 0){
@@ -139,18 +99,8 @@ int main (){
                 } 
                 solicitarLibro(mapaLibrosBiblioteca,mapaDeAutores,mapaDeDeudores);
                 printf ("===============================================================\n");
-                printf ("          Volver al menu: 1 - Salir del programa: 0\n");
+                printf ("          Operacion finalizada. Volviendo al menu\n");
                 printf ("===============================================================\n");
-                printf(" Ingrese un numero: ");
-                scanf ("%d", &op);
-                while(op < 0 || op > 1){
-                    printf ("===============================================================\n");
-                    printf (" Por favor ingrese uno de los numeros anteriores: ");
-                    while(getchar()!='\n');
-                    scanf ("%d", &op);
-                }
-                //if (op == 0) return 0;
-                if (op == 1) break;
                 break;
 
             case 6:
@@ -160,18 +110,8 @@ int main (){
                 } 
                 devolverLibro(mapaLibrosBiblioteca,mapaDeAutores,mapaDeDeudores);
                 printf ("===============================================================\n");
-                printf ("          Volver al menu: 1 - Salir del programa: 0\n");
+                printf ("          Operacion finalizada. Volviendo al menu\n");
                 printf ("===============================================================\n");
-                printf(" Ingrese un numero: ");
-                scanf ("%d", &op);
-                while(op < 0 || op > 1){
-                    printf ("===============================================================\n");
-                    printf (" Por favor ingrese uno de los numeros anteriores: ");
-                    while(getchar()!='\n');
-                    scanf ("%d", &op);
-                }
-                //if (op == 0) return 0;
-                if (op == 1) break;
                 break;
 
             case 7:
@@ -181,7 +121,7 @@ int main (){
                 } 
                 mostrarMorosos(mapaDeDeudores);
                 printf ("===============================================================\n");
-                printf ("          Volver al menu: 1 - Salir del programa: 0\n");
+                printf ("          Volver al menu: 1 - Salir sin guardar: 0\n");
                 printf ("===============================================================\n");
                 printf(" Ingrese un numero: ");
                 scanf ("%d", &op);
@@ -191,14 +131,14 @@ int main (){
                     while(getchar()!='\n');
                     scanf ("%d", &op);
                 }
-                //if (op == 0) return 0;
+                if (op == 0) return 0;
                 if (op == 1) break;
                 break;
 
             
             case 0: 
                 printf ("===============================================================\n");
-                printf ("Guardar y salir: 0. Salir - Salir sin guardar: 1\n");
+                printf ("       Guardar y salir: 0 - Salir sin guardar: 1\n");
                 printf ("===============================================================\n");
                 printf(" Ingrese un numero: ");
                 scanf ("%d", &op);
