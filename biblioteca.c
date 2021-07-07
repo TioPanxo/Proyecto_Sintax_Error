@@ -439,7 +439,6 @@ void mostrarMorosos(HashMap * mapaDeDeudores){
 
     fechaActualAux = localtime(&ahora);
     int contador = 0;
-
     List * listaDePersona = firstMap(mapaDeDeudores);
     while(listaDePersona != NULL){
         Persona * personaAux = first(listaDePersona);
@@ -492,8 +491,10 @@ void cerrarPrograma (HashMap * mapaLibrosBiblioteca, HashMap * mapaDeDeudores){
 
     while (nuevoLibro != NULL) {    //Recorrido de libros para escribir en csv
         fprintf(archivoLibros, "%s,", nuevoLibro->ISBN);
-        fprintf(archivoLibros, "%s,", nuevoLibro->nombreDelLibro);
-        fprintf(archivoLibros, "%s,", nuevoLibro->nombreDelAutor);
+        fprintf(archivoLibros, "%c", 34);
+        fprintf(archivoLibros, "%s", nuevoLibro->nombreDelLibro);
+        fprintf(archivoLibros, "%c", 34);
+        fprintf(archivoLibros, ",%s,", nuevoLibro->nombreDelAutor);
         fprintf(archivoLibros, "%s,", nuevoLibro->codigoLibro);
         fprintf(archivoLibros, "%d\n", nuevoLibro->disponibilidad);
         //printf ("Libro almacenado: %s \n", nuevoLibro->nombreDelLibro);
